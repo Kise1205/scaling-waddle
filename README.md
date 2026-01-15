@@ -1,5 +1,5 @@
-# scaling-waddle
+# fantastic-barnacle-devops
+Spring 2026 CIS 486. 
 
-CIS 486
 
-Edited.
+edit. 
