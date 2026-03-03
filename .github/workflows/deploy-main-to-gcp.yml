@@ -28,7 +28,9 @@ jobs:
             cd /home/unokiss307/scaling-waddle || { echo "Directory not found"; exit 1; }
             
             git pull origin main
-            npm ci
+            
+            rm -rf node_modules
+            npm install --production --no-audit --no-fund
 
             pm2 delete "${{ vars.PM2_NAME }}" || true
             pm2 start -f app.mjs --name "${{ vars.PM2_NAME }}"
