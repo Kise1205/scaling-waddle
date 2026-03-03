@@ -15,32 +15,29 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-
-          # safer than StrictHostKeyChecking=no
           ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
-          - name: Deploy over SSH
-                  shell: bash
-                  run: |
-                    ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -tt "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" << 'EOF'
-                      set -e
-          
-                      # Sử dụng đường dẫn trực tiếp để đảm bảo không bị lỗi biến môi trường
-                      cd /home/unokiss307/scaling-waddle || { echo "Không tìm thấy thư mục dự án"; exit 1; }
-          
-                      echo "Đang ở thư mục: $(pwd)"
-                      
-                      git pull origin main
-                      npm ci
-          
-                      # Sử dụng tên PM2 cố định hoặc biến trực tiếp từ GitHub
-                      pm2 delete "${{ vars.PM2_NAME }}" || true
-                      pm2 start -f app.mjs --name "${{ vars.PM2_NAME }}"
-                      pm2 save
-                      
-                      exit
-                    EOF
+      - name: Deploy over SSH
+        shell: bash
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -tt "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" << 'EOF'
+            set -e
+
+            # Viết thẳng đường dẫn dự án của bạn ở đây
+            cd /home/unokiss307/scaling-waddle || { echo "Directory not found"; exit 1; }
+
+            echo "Current directory: $(pwd)"
+            
+            git pull origin main
+            npm ci
+
+            # Dùng tên app pm2 từ variable hoặc viết thẳng 'waddle'
+            pm2 delete "${{ vars.PM2_NAME }}" || true
+            pm2 start -f app.mjs --name "${{ vars.PM2_NAME }}"
+            pm2 save
+            
+            exit
+          EOF
