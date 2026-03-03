@@ -13,31 +13,44 @@ jobs:
       - name: Prepare SSH
         shell: bash
         run: |
+          # Tạo thư mục SSH và thiết lập quyền hạn an toàn
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
+
+          # Ghi Private Key vào file id_rsa
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+
+          # Quét key của host để tránh lỗi xác thực
           ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
       - name: Deploy over SSH
         shell: bash
         run: |
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -tt "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" << 'EOF'
+          # Kết nối SSH sử dụng User và Host từ Secrets
+          # Loại bỏ tùy chọn -tt để tránh lỗi Exit Code 1 khi kết thúc session
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" << 'EOF'
             set -e
 
-            # Viết thẳng đường dẫn dự án của bạn ở đây
-            cd /home/unokiss307/scaling-waddle || { echo "Directory not found"; exit 1; }
+            # Di chuyển vào thư mục dự án (Sử dụng đường dẫn tuyệt đối đã xác nhận)
+            cd /home/unokiss307/scaling-waddle || { echo "Không tìm thấy thư mục dự án"; exit 1; }
 
-            echo "Current directory: $(pwd)"
+            echo "Đang thực hiện deploy tại: $(pwd)"
             
+            # Cập nhật code từ GitHub
             git pull origin main
+            
+            # Cài đặt các dependencies
             npm ci
 
-            # Dùng tên app pm2 từ variable hoặc viết thẳng 'waddle'
+            # Quản lý quy trình bằng PM2
+            # Sử dụng biến PM2_NAME từ GitHub Variables
             pm2 delete "${{ vars.PM2_NAME }}" || true
             pm2 start -f app.mjs --name "${{ vars.PM2_NAME }}"
+            
+            # Lưu trạng thái để tự khởi động lại khi reboot
             pm2 save
             
-            exit
+            echo "Deployment successfully completed!"
           EOF
