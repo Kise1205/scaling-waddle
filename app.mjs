@@ -9,6 +9,8 @@ import { MongoClient, ServerApiVersion, ObjectId } from 'mongodb';
 
 //const { MongoClient, ServerApiVersion } = require('mongodb');
 
+// app.mjs
+
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -46,177 +48,55 @@ async function connectToMongo() {
 connectToMongo();
 
 
-// middlewares aka endpoints aka 'get to slash' {http verb} to slash {you name ur endpoint}
-app.get('/', (req, res) => {
-  // res.send('Hello Express'); //string response
-  // res.sendFile('index.html'); // <- this don't work w/o imports, assign, and arguements
-  res.sendFile(join(__dirname, 'public', 'index.html')) ;
-
-})
-
-app.get('/inject', (req, res) => {
-  // Inject a server variable into barry.html: templating view like ejs or pug
-  readFile(join(__dirname, 'public', 'index.html'), 'utf8')
-    .then(html => {
-      // Replace a placeholder in the HTML (e.g., {{myVar}})
-      const injectedHtml = html.replace('{{myVar}}', myVar);
-      res.send(injectedHtml);
-    })
-    .catch(err => {
-      res.status(500).send('Error loading page');
-    });
-})
-
-// API Health/Endpoints Documentation
-app.get('/api/health', (req, res) => {
-  const endpoints = [
-    {
-      method: 'GET',
-      path: '/',
-      description: 'Serve the main HTML page'
-    },
-    {
-      method: 'GET',
-      path: '/inject',
-      description: 'Serve HTML with server-side variable injection'
-    },
-    {
-      method: 'GET',
-      path: '/api/health',
-      description: 'Show all available API endpoints'
-    },
-    {
-      method: 'GET',
-      path: '/api/class',
-      description: 'Get class information (course details)'
-    },
-    {
-      method: 'POST',
-      path: '/api/attendance',
-      description: 'CREATE - Add new student attendance record',
-      bodyExample: {
-        studentName: 'John Doe',
-        date: 'February 3, 2026',
-        keyword: 'devops'
-      }
-    },
-    {
-      method: 'GET',
-      path: '/api/attendance',
-      description: 'READ - Get all attendance records'
-    },
-    {
-      method: 'PUT',
-      path: '/api/attendance/:id',
-      description: 'UPDATE - Update existing attendance record',
-      bodyExample: {
-        studentName: 'Jane Doe',
-        date: 'February 3, 2026',
-        keyword: 'mongodb'
-      }
-    },
-    {
-      method: 'DELETE',
-      path: '/api/attendance/:id',
-      description: 'DELETE - Remove attendance record'
-    }
-  ];
-
-  res.json({
-    status: 'healthy',
-    server: 'CIS 486 DevOps Server',
-    timestamp: new Date().toISOString(),
-    endpoints: endpoints
-  });
-});
-
-// Class Information API
-app.get('/api/class', (req, res) => {
-  const classInfo = {
-    courseNumber: 'CIS 486',
-    courseName: 'Projects in IS',
-    nickname: 'Full Stack DevOps',
-    semester: 'Spring 2026',
-    calendar: 'Class calendar coming soon!'
-  };
-  res.json(classInfo);
-});
-
-// CRUD Operations for Attendance
-
-// CREATE - Add student attendance
-app.post('/api/attendance', async (req, res) => {
+// GET - Fetch all quebec records
+app.get('/api/quebec', async (req, res) => {
   try {
-    const { studentName, date, keyword } = req.body;
-    
-    if (!studentName || !date || !keyword) {
-      return res.status(400).json({ error: 'Missing required fields' });
-    }
-
-    const db = client.db('cis486');
-    const collection = db.collection('attendance');
-    
-    const attendanceRecord = {
-      studentName,
-      date,
-      keyword,
-      timestamp: new Date()
-    };
-    
-    const result = await collection.insertOne(attendanceRecord);
-    res.json({ message: 'Attendance recorded!', id: result.insertedId });
-  } catch (error) {
-    console.error('Error creating attendance:', error);
-    res.status(500).json({ error: 'Failed to record attendance' });
-  }
-});
-
-// READ - Get all attendance records
-app.get('/api/attendance', async (req, res) => {
-  try {
-    const db = client.db('cis486');
-    const collection = db.collection('attendance');
+    // SỬA: Trỏ đúng vào database 'quebec' và collection 'quebec'
+    const db = client.db('quebec');
+    const collection = db.collection('quebec');
     
     const records = await collection.find({}).toArray();
     res.json(records);
   } catch (error) {
-    console.error('Error reading attendance:', error);
-    res.status(500).json({ error: 'Failed to get attendance records' });
+    console.error('Error fetching quebec:', error);
+    res.status(500).json({ error: 'Failed to fetch quebec' });
   }
 });
 
-// UPDATE - Update attendance record
-app.put('/api/attendance/:id', async (req, res) => {
+// UPDATE - Update quebec record
+app.put('/api/quebec/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { studentName, date, keyword } = req.body;
+    // SỬA: Lấy trường 'name' từ body để khớp với database của bạn
+    const { name } = req.body;
     
-    const db = client.db('cis486');
-    const collection = db.collection('attendance');
+    const db = client.db('quebec');
+    const collection = db.collection('quebec');
     
     const result = await collection.updateOne(
       { _id: new ObjectId(id) },
-      { $set: { studentName, date, keyword, updatedAt: new Date() } }
+      // SỬA: Update trường 'name'
+      { $set: { name, updatedAt: new Date() } }
     );
     
     if (result.matchedCount === 0) {
       return res.status(404).json({ error: 'Record not found' });
     }
     
-    res.json({ message: 'Attendance updated!' });
+    res.json({ message: 'quebec updated!' });
   } catch (error) {
-    console.error('Error updating attendance:', error);
-    res.status(500).json({ error: 'Failed to update attendance' });
+    console.error('Error updating quebec:', error);
+    res.status(500).json({ error: 'Failed to update quebec' });
   }
 });
 
-// DELETE - Delete attendance record
-app.delete('/api/attendance/:id', async (req, res) => {
+// DELETE - Delete quebec record
+app.delete('/api/quebec/:id', async (req, res) => {
   try {
     const { id } = req.params;
     
-    const db = client.db('cis486');
-    const collection = db.collection('attendance');
+    const db = client.db('quebec');
+    const collection = db.collection('quebec');
     
     const result = await collection.deleteOne({ _id: new ObjectId(id) });
     
@@ -224,16 +104,15 @@ app.delete('/api/attendance/:id', async (req, res) => {
       return res.status(404).json({ error: 'Record not found' });
     }
     
-    res.json({ message: 'Attendance deleted!' });
+    res.json({ message: 'quebec deleted!' });
   } catch (error) {
-    console.error('Error deleting attendance:', error);
-    res.status(500).json({ error: 'Failed to delete attendance' });
+    console.error('Error deleting quebec:', error);
+    res.status(500).json({ error: 'Failed to delete quebec' });
   }
 });
 
 
-
-//start the server. 
-app.listen(3000, () => {
-  console.log('Server is running on http://localhost:3000')
-})
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
