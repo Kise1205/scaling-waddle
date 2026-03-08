@@ -13,7 +13,7 @@ import { fileURLToPath } from 'url';                      // Helps get the curre
 import { dirname, join } from 'path';                     // Utilities for working with file paths
 import { MongoClient, ServerApiVersion } from 'mongodb';  // MongoDB driver
 
-import quebecRoutes from './routes/quebecRoutes.js';      // Import routes đã tách
+import quebecRoutes from './routes/quebecRoutes.js';      // Import routes separated for MVC structure
 
 // --- Step 2: Configure Express ---
 
@@ -47,7 +47,7 @@ async function connectToMongo() {
     console.log('Successfully connected to MongoDB!');
     
     // --- Step 4: Define API Routes ---
-    // Sử dụng Router đã tách biệt để đảm bảo cấu trúc MVC
+    // Use the router we separated to ensure MVC structure
     app.use('/api/quebec', quebecRoutes(client));
 
     // --- Step 5: Start the server ---

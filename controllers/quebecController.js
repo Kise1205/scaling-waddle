@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb';
 import QuebecModel from '../models/quebecModel.js';
 
-// --- API Logic cho Quebec ---
+// --- API Logic Quebec ---
 
 export const getAllRecords = async (req, res, client) => {
   try {
@@ -24,7 +24,7 @@ export const createRecord = async (req, res, client) => {
     const newRecord = new QuebecModel(name, repo, app, img);  // Create a new instance of the QuebecModel class
 
     const result = await collection.insertOne(newRecord);  // Insert the new document into the collection
-    res.status(201).json({ message: 'Record created!', id: result.insertedId });  // Trả về 201 để đúng chuẩn RESTful
+    res.status(201).json({ message: 'Record created!', id: result.insertedId });  // Return 201 to indicate successful creation
   } catch (error) {
     console.error('Error creating record:', error);
     res.status(500).json({ error: 'Failed to create record' });
