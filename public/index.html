@@ -3,17 +3,17 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Memory Match Game</title>
+    <title>CIS 486 Game Collection</title>
 
-    <!-- Bootstrap 5 -->
+    <!-- Bootstrap 5 — CSS framework for responsive layout and styling -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Google Font -->
+    <!-- Google Font — Poppins for a clean, modern look -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-    <!-- Custom CSS -->
+    <!-- normalize.css — Makes default styles consistent across browsers -->
     <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/styles.css"> <!-- Our custom styles -->
   </head>
 
   <body class="bg-light d-flex flex-column min-vh-100">
@@ -25,41 +25,43 @@
       </div>
     </nav>
 
-    <!-- Main -->
+    <!-- ===== Main Content ===== -->
     <div class="container mt-5 pt-5">
+
+      <!-- Hero / Header Section -->
       <header class="text-center py-5 hd-background mb-3">
-        <h1>CIS 376 Class Game Collection</h1>
-        <p>Play fun web games created by students in CIS 376 – Web Development.</p>
+        <h1>CIS 486 Class Game Collection</h1>
+        <p>Play fun web games created by students in CIS 486 – Web Development.</p>
         <a href="#cardsGrid" class="btn btn-primary btn-lg mt-2">Browse Games</a>
       </header>
-      <!-- Toolbar -->
+
+      <!-- Toolbar: Title + Sort Dropdown -->
       <div class="d-flex align-items-center justify-content-between mb-3">
-        <h1 class="h4 m-0 fw-bold text-dark">CLASS GAMES</h1>
+        <h2 class="h4 m-0 fw-bold text-dark">CLASS GAMES</h2>
         <select id="sortSelect" class="form-select w-auto">
-          <option value="asc">Sort: A → Z</option>
-          <option value="desc">Sort: Z → A</option>
+          <option value="asc">Sort: A &rarr; Z</option>
+          <option value="desc">Sort: Z &rarr; A</option>
         </select>
       </div>
 
-      <!-- Cards go here -->
       <div id="cardsGrid" class="row g-3"></div>
 
-      <!-- Empty state -->
+      <!-- Empty State — Shown when there are no games to display -->
       <div id="emptyState" class="text-center py-5 d-none">
-        <p class="lead mb-1">No results</p>
-        <p class="text-muted">Try a different sort.</p>
+        <p class="lead mb-1">No games found</p>
+        <p class="text-muted">Try a different sort option.</p>
       </div>
     </div>
 
     <!-- ===== Footer ===== -->
     <footer class="mt-auto py-3 bg-dark text-white text-center small">
-      <p class="mb-1 fw-bold">Copyright © 2025 by Team 3 | All Rights Reserve</p>
-      <a class="text-white fw-bold" href="https://validator.w3.org/nu/?doc=https%3A%2F%2Fkise1205.github.io%2Fproject-charlie%2F" target="_blank">NU HTML Validator</a>
-      <a class="text-white fw-bold" href="https://wave.webaim.org/report#/https://kise1205.github.io/project-charlie/" target="_blank">WAVE Validator</a>
-      <a class="text-white fw-bold" href="https://github.com/Kise1205/project-charlie" target="_blank">Source Code</a>
+      <p class="mb-1 fw-bold">Copyright &copy; 2026 by Thuan Nguyen | All Rights Reserved</p>
+        <a class="text-white fw-bold" href="https://validator.w3.org/nu/?doc=https%3A%2F%2Fkise1205.github.io%2Fproject-charlie%2F" target="_blank">NU HTML Validator</a>
+        <a class="text-white fw-bold" href="https://wave.webaim.org/report#/https://kise1205.github.io/project-charlie/" target="_blank">WAVE Validator</a>
+        <a class="text-white fw-bold" href="https://github.com/Kise1205/project-charlie" target="_blank">Source Code</a>
     </footer>
 
-    <!-- JS -->
-    <script type="module" src="js/scripts.js"></script>
+    <!-- Load our frontend JavaScript -->
+    <script src="js/scripts.js"></script>
   </body>
 </html>
