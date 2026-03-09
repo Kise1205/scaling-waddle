@@ -1,25 +1,28 @@
 {
-  "name": "fantastic-barnacle-devops",
+  "name": "scaling-waddle",
   "version": "1.0.0",
+  "type": "module",
   "description": "Spring 2026 CIS 486.",
-  "main": "index.js",
+  "main": "app.mjs",
   "scripts": {
+    "start": "nodemon app.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/barrycumbie/fantastic-barnacle-devops.git"
+    "url": "git+https://github.com/Kise1205/scaling-waddle.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/barrycumbie/fantastic-barnacle-devops/issues"
+    "url": "https://github.com/Kise1205/scaling-waddle/issues"
   },
-  "homepage": "https://github.com/barrycumbie/fantastic-barnacle-devops#readme",
+  "homepage": "https://github.com/Kise1205/scaling-waddle#readme",
   "dependencies": {
-    "dotenv": "^17.2.3",
+    "dotenv": "^17.3.1",
     "express": "^5.2.1",
-    "mongodb": "^7.0.0"
+    "mongodb": "^7.1.0",
+    "nodemon": "^3.1.14"
   }
 }
