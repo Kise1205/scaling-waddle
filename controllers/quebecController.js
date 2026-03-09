@@ -3,6 +3,17 @@ import QuebecModel from '../models/quebecModel.js';
 
 // --- API Logic Quebec ---
 
+export const addGame = async (db, data) => {
+    // data { name, repo, app, image }
+    return await db.collection('games').insertOne({
+        name: data.name,
+        repo: data.repo,
+        app: data.app,
+        image: data.image,
+        createdAt: new Date()
+    });
+};
+
 export const getAllRecords = async (req, res, client) => {
   try {
     const db = client.db('quebec');              // Select the database

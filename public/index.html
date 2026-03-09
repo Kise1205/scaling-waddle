@@ -45,7 +45,16 @@
       </div>
 
       <div id="cardsGrid" class="row g-3"></div>
-
+    <section id="add-game-section" style="margin: 20px; padding: 20px; border: 1px solid #ccc;">
+      <h2>Add New Project/Game</h2>
+      <form id="game-form">
+          <input type="text" id="name" placeholder="Game/Project Name" required><br><br>
+          <input type="url" id="repo" placeholder="GitHub Repository URL" required><br><br>
+          <input type="url" id="app" placeholder="Live App URL" required><br><br>
+          <input type="url" id="image" placeholder="Image Preview URL" required><br><br>
+          <button type="submit">Add to Database</button>
+      </form>
+    </section>
       <!-- Empty State — Shown when there are no games to display -->
       <div id="emptyState" class="text-center py-5 d-none">
         <p class="lead mb-1">No games found</p>

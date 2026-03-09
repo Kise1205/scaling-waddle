@@ -166,7 +166,33 @@ function renderCards(data) {
     grid.appendChild(col);
   });
 }
+document.getElementById('game-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
 
+    const gameData = {
+        name: document.getElementById('name').value,
+        repo: document.getElementById('repo').value,
+        app: document.getElementById('app').value,
+        image: document.getElementById('image').value
+    };
+
+    try {
+        const response = await fetch('/api/quebec', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(gameData)
+        });
+
+        if (response.ok) {
+            alert('Game added successfully!');
+            location.reload(); // Reload the page to fetch and display the new game
+        } else {
+            alert('Failed to add game.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
 // ============================================================
 // EVENT LISTENERS — Wire up user interactions
 // ============================================================
