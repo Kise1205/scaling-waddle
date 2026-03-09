@@ -1,9 +1,9 @@
 # 🎮 Project QUEBEC
 
 ### **Author:** Nguyen Quang Thuan
-**Course:** CIS 486
-**University:** University of North Alabama (UNA)
-**Professor:** Barry Cumbie
+* **Course:** CIS 486
+* **University:** University of North Alabama (UNA)
+* **Professor:** Barry Cumbie
 
 ---
 
